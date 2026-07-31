@@ -1,0 +1,12 @@
+# C++ build
+server/build/
+server/maze.db
+*.o
+*.obj
+
+# Node / frontend
+client/node_modules/
+client/dist/
+
+# OS
+.DS_Store

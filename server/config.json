@@ -1,0 +1,32 @@
+{
+  "listeners": [
+    {
+      "address": "0.0.0.0",
+      "port": 5555,
+      "https": false
+    }
+  ],
+  "db_clients": [
+    {
+      "rdbms": "sqlite3",
+      "filename": "maze.db",
+      "name": "default",
+      "connection_number": 1,
+      "is_fast": false
+    }
+  ],
+  "app": {
+    "threads_num": 4,
+    "enable_session": false,
+    "log": {
+      "log_path": "",
+      "logfile_base_name": "",
+      "log_size_limit": 100000000,
+      "log_level": "INFO"
+    }
+  },
+  "custom_config": {
+    "jwt_secret": "change-this-secret-please-in-any-real-deployment",
+    "jwt_expiry_seconds": 86400
+  }
+}
