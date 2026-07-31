@@ -28,6 +28,8 @@ void ensureSchema()
 
 int main()
 {
+    // Resolve config.json relative to this source file so the binary works
+    // no matter what directory it's launched from (e.g. server/build/).
     app().loadConfigFile(std::string(SOURCE_DIR) + "/config.json");
 
     // Basic permissive CORS so the Vite dev server (localhost:5173) can talk
