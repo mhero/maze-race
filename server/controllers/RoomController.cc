@@ -1,33 +1,22 @@
 #include "RoomController.h"
-#include "../services/GameRoomManager.h"
+#include "../services/RoomService.h"
 #include <drogon/drogon.h>
 
 using namespace drogon;
 
 void RoomController::createRoom(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback)
 {
-    int size = 15;  // odd sizes only, so there's a well-defined single center cell
     auto json = req->getJsonObject();
-    if (json && json->isMember("size"))
-    {
-        int requested = (*json)["size"].asInt();
-        if (requested >= 9 && requested <= 25 && requested % 2 == 1)
-            size = requested;
-    }
+    int requestedSize = (json && json->isMember("size")) ? (*json)["size"].asInt() : 0;
 
-    auto room = GameRoomManager::instance().createRoom(size);
-
-    Json::Value res;
-    res["code"] = room->code;
-    res["size"] = room->size;
-    callback(HttpResponse::newHttpJsonResponse(res));
+    callback(HttpResponse::newHttpJsonResponse(RoomService::createRoom(requestedSize)));
 }
 
 void RoomController::getRoom(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback,
                               std::string code)
 {
-    auto room = GameRoomManager::instance().getRoom(code);
-    if (!room)
+    auto status = RoomService::getRoomStatus(code);
+    if (!status)
     {
         Json::Value err;
         err["error"] = "room not found";
@@ -37,10 +26,5 @@ void RoomController::getRoom(const HttpRequestPtr &req, std::function<void(const
         return;
     }
 
-    Json::Value res;
-    res["code"] = room->code;
-    res["size"] = room->size;
-    res["playerCount"] = static_cast<int>(room->players.size());
-    res["finished"] = room->finished;
-    callback(HttpResponse::newHttpJsonResponse(res));
+    callback(HttpResponse::newHttpJsonResponse(*status));
 }
