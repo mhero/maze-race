@@ -32,7 +32,7 @@ async function postJson(path, body) {
   return handle(res)
 }
 
-async function handle(res) {
+export async function handle(res) {
   const data = await res.json().catch(() => ({}))
   if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`)
   return data

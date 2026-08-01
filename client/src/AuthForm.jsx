@@ -63,7 +63,7 @@ export default function AuthForm({ onAuth }) {
         </form>
 
         <button className="link-button" onClick={() => setMode(mode === 'login' ? 'register' : 'login')}>
-          {mode === 'login' ? "Don't have a callsign? Register" : 'Already registered? Log in'}
+          {mode === 'login' ? "Need a callsign? Register" : 'Already registered? Log in'}
         </button>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { WS_BASE } from './api'
+import { keyToDirection } from './keyboard'
 
 const CELL = 26
 const NORTH = 1
@@ -72,18 +73,8 @@ export default function MazeGame({ token, username, roomCode, onExit }) {
   )
 
   useEffect(() => {
-    const keyMap = {
-      ArrowUp: 'up',
-      ArrowDown: 'down',
-      ArrowLeft: 'left',
-      ArrowRight: 'right',
-      w: 'up',
-      s: 'down',
-      a: 'left',
-      d: 'right',
-    }
     const handler = (e) => {
-      const dir = keyMap[e.key]
+      const dir = keyToDirection(e.key)
       if (dir) {
         e.preventDefault()
         sendMove(dir)

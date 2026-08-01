@@ -143,6 +143,21 @@ Open the URL Vite prints (typically `http://localhost:5173`).
 | GET    | `/api/leaderboard`   | —    | Top winners by win count              |
 | WS     | `/ws/game?token=&room=` | JWT (query param) | Join a room's live game session |
 
+## Testing
+
+```bash
+cd server
+mkdir -p build && cd build
+cmake ..
+make -j$(sysctl -n hw.ncpu)
+ctest --output-on-failure
+```
+
+```bash
+cd client
+npm test
+```
+
 ## Notes & limitations (by design, for a showcase project)
 
 - Game rooms live in memory and are lost on server restart — there's no
