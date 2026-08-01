@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  backend-tests:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Drogon + GoogleTest
+        run: brew install drogon googletest
+
+      - name: Configure
+        working-directory: server
+        run: |
+          mkdir -p build
+          cd build
+          cmake ..
+
+      - name: Build
+        working-directory: server/build
+        run: cmake --build . --parallel
+
+      - name: Run tests
+        working-directory: server/build
+        run: ctest --output-on-failure
+
+  frontend-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        working-directory: client
+        run: npm install
+
+      - name: Run tests
+        working-directory: client
+        run: npm test
